@@ -143,6 +143,12 @@ main {
   gap: 1rem;
 }
 
+.algorithm {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 h3 {
   color: var(--text__highlight);
   text-transform: uppercase;
