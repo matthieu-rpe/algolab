@@ -19,10 +19,12 @@ function init() {
     {
       engine: bubbleSort([...randomData]),
       visualizer: new Visualizer("bubble-canvas"),
+      done: false,
     },
     {
       engine: selectionSort([...randomData]),
       visualizer: new Visualizer("selection-canvas"),
+      done: false,
     },
   ];
 
@@ -43,10 +45,15 @@ function togglePlay() {
   } else {
     document.getElementById("play").innerText = "Stop";
     timer = setInterval(() => {
-      algos.forEach((a) => {
-        const step = a.engine.next();
+      let allDone = true;
 
-        if (!step.done) {
+      algos.forEach((a) => {
+        if (a.done) return;
+        allDone = false;
+
+        const step = a.engine.next();
+        if (step.done) a.done = true;
+        else {
           a.visualizer.draw(
             step.value.data,
             step.value.comparing,
@@ -55,6 +62,8 @@ function togglePlay() {
           );
         }
       });
+
+      if (allDone) stop();
     }, parseInt(document.getElementById("speed").value));
   }
 }
