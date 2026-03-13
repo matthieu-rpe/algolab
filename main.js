@@ -2,6 +2,7 @@ import { Visualizer } from "./visualizer.js";
 
 import { bubbleSort } from "./algorithms/bubble.js";
 import { selectionSort } from "./algorithms/selection.js";
+import { mergeSort } from "./algorithms/merge.js";
 
 let timer = null;
 let flaggedTime = null;
@@ -46,6 +47,11 @@ function init() {
     {
       engine: selectionSort([...randomData]),
       visualizer: new Visualizer("selection-canvas"),
+      done: false,
+    },
+    {
+      engine: mergeSort([...randomData]),
+      visualizer: new Visualizer("merge-canvas"),
       done: false,
     },
   ];
