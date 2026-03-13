@@ -15,18 +15,17 @@ export function* bubbleSort(data) {
     let swapped = false;
     let sorted = Array.from({ length: i }, (_, k) => n - k - 1);
 
+    yield {
+      data,
+      comparing: [0, 1],
+      sorted,
+    };
+
     /*
      * We compare two elements at [j, j+1] and put the biggest at j+1 to bubble up
      * We stop at n-i-1 because 'i' elements have already been bubbled up before from index 'n-i-1' to 'n-1'.
      */
     for (let j = 0; j < n - i - 1; j++) {
-      yield {
-        data,
-        comparing: [j, j + 1],
-        moving: [data[j] > data[j + 1] ? j : j + 1],
-        sorted,
-      };
-
       if (data[j] > data[j + 1]) {
         swapped = true;
         [data[j], data[j + 1]] = [data[j + 1], data[j]];

@@ -15,15 +15,14 @@ export function* selectionSort(data) {
     let sorted = Array.from({ length: i }, (_, k) => k);
     let smallestIndex = i; // first unsorted element
 
+    yield {
+      data,
+      moving: [smallestIndex],
+      sorted,
+    };
+
     // From the next element to the end of the table, seek the smallest number
     for (let j = i + 1; j <= n; j++) {
-      yield {
-        data,
-        comparing: [j],
-        moving: [smallestIndex],
-        sorted,
-      };
-
       if (data[smallestIndex] > data[j]) {
         smallestIndex = j;
       }
