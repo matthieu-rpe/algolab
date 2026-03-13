@@ -11,10 +11,10 @@ export class Visualizer {
     const barWidth = width / data.length;
 
     data.forEach((val, i) => {
-      this.ctx.fillStyle = "#ff003c";
+      this.ctx.fillStyle = "#c5003c44";
       if (comparing.includes(i)) this.ctx.fillStyle = "#55ead4";
       if (moving.includes(i)) this.ctx.fillStyle = "#f3e600";
-      if (sorted.includes(i)) this.ctx.fillStyle = "#f3e600";
+      if (sorted.includes(i)) this.ctx.fillStyle = "#c5003c";
 
       const barHeight = (val / 100) * height;
 
