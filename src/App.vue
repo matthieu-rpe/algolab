@@ -16,18 +16,67 @@ import { RouterView } from 'vue-router';
   </main>
 </template>
 
-<style>
+<style lang="css">
 :root {
-  --dark: #0d0d0d;
-  --cyan: #55ead4;
-  --torch-red: #c5003c;
-  --dark-red: #c5003c44;
-  --yellow: #f3e600;
+  /* palette color */
+  --ebony: #090d18;
+  --zircon: #fcfdff;
 
-  --bg-color: var(--dark);
-  --text: var(--torch-red);
-  --text__highlight: var(--yellow);
-  --control: var(--cyan);
+  --azure-radiance: #00a0fe;
+  --cyan: #00fee6;
+  --caribbean-green: #00e79f;
+  --amber: #fcc006;
+  --pumpkin: #fe7723;
+  --torch-red: #fe1530;
+
+  /* semantic color */
+  --background: var(--ebony);
+  --text: var(--primary);
+  --accent: var(--caribbean-green);
+  --neutral: var(--zircon);
+  --primary: var(--torch-red);
+  --on-primary: var(--ebony);
+  --secondary: var(--cyan);
+  --tertiary: var(--amber);
+
+  /* text-size */
+  --text-xs: 0.6rem;
+  --text-sm: 0.8rem;
+  --text-base: 16px;
+  --text-lg: 1.2rem;
+  --text-xl: 1.4rem;
+
+  /* spacing */
+  --spacing-xs: 2px;
+  --spacing-sm: 4px;
+  --spacing-md: 8px;
+  --spacing-lg: 12px;
+  --spacing-xl: 18px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 36px;
+  --spacing-3xl: 48px;
+  --spacing-4xl: 64px;
+  --spacing-5xl: 96px;
+  --spacing-6xl: 128px;
+
+  /* border */
+  --border-xs: 1px;
+  --border-sm: 2px;
+  --border-md: 4px;
+  --border-lg: 6px;
+  --border-xl: 8px;
+
+  /* size */
+  --size-xs: 2px;
+  --size-sm: 4px;
+  --size-md: 8px;
+  --size-lg: 16px;
+  --size-xl: 24px;
+  --size-2xl: 36px;
+  --size-3xl: 48px;
+  --size-4xl: 64px;
+  --size-5xl: 96px;
+  --size-6xl: 128px;
 }
 
 html,
@@ -37,8 +86,9 @@ body {
   margin: 0;
   padding: 0;
 
-  background-color: var(--bg-color);
+  background-color: var(--background);
   color: var(--text);
+  font-size: var(--text-base);
   font-family: 'Courier New', Courier, monospace;
 }
 
@@ -46,67 +96,47 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
 
-body::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background:
-    linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%),
-    linear-gradient(
-      90deg,
-      rgba(255, 0, 0, 0.06),
-      rgba(0, 255, 0, 0.02),
-      rgba(0, 0, 255, 0.06)
-    );
-  background-size:
-    100% 3px,
-    3px 100%;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--primary), transparent 85%) 0%,
+    color-mix(in srgb, var(--primary), transparent 95%) 33%,
+    color-mix(in srgb, var(--primary), transparent 95%) 66%,
+    color-mix(in srgb, var(--primary), transparent 85%) 100%
+  );
 }
+</style>
 
-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--cyan);
-  font-weight: bold;
-}
-
-input[type='number'] {
-  background: var(--bg-color);
-  border: 1px solid var(--control);
-  color: var(--control);
-  font-weight: bold;
-  width: 80px;
-  outline: none;
+<style lang="css" scoped>
+header {
+  flex-shrink: 0;
   text-align: center;
+
+  border-bottom: var(--border-xs) solid var(--primary);
+  padding: var(--spacing-xl);
+  margin: 0 var(--spacing-3xl);
 }
 
-input[type='number']:disabled {
-  cursor: not-allowed;
+header > nav {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-2xl);
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+header > nav > a {
+  text-decoration: none;
 }
 
-button {
-  background: var(--control);
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 8px 20px;
-  width: 140px;
-  cursor: pointer;
-  clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+header > nav > a:not(.router-link-exact-active) {
+  color: var(--primary);
 }
 
-button:disabled {
-  cursor: not-allowed;
+header > nav > a.router-link-exact-active {
+  color: var(--accent);
+}
+
+main {
+  flex-grow: 1;
+  margin: var(--spacing-2xl);
 }
 </style>

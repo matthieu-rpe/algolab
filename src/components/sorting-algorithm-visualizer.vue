@@ -7,27 +7,37 @@ const props = defineProps<{
   algorithm: Algorithm<SortingEngine>;
 }>();
 
+function getCssVar(name: string) {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(name)
+    .trim();
+}
+
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
 function draw() {
   const canvas = canvasRef.value;
   if (!canvas || !props.algorithm.state) return;
 
-  const { width, height } = canvas;
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
+  const { width, height } = canvas;
   const { data, comparing, moving, sorted } = props.algorithm.state;
-
-  ctx.clearRect(0, 0, width, height);
 
   const barWidth = width / data.length;
 
+  const accent = getCssVar('--accent');
+  const neutral = getCssVar('--neutral');
+  const primary = getCssVar('--primary');
+  const defaultColor = `${primary}44`;
+
+  ctx.clearRect(0, 0, width, height);
   data.forEach((val, i) => {
-    ctx.fillStyle = '#c5003c44'; // default color
-    if (comparing.includes(i)) ctx.fillStyle = '#55ead4'; // comparing
-    if (moving.includes(i)) ctx.fillStyle = '#f3e600'; // moving
-    if (sorted?.includes(i)) ctx.fillStyle = '#c5003c'; // sorted
+    ctx.fillStyle = defaultColor; // default color
+    if (comparing.includes(i)) ctx.fillStyle = primary; // comparing
+    if (moving.includes(i)) ctx.fillStyle = neutral; // moving
+    if (sorted?.includes(i)) ctx.fillStyle = accent; // sorted
 
     const barHeight = (val / 100) * height;
 
@@ -55,7 +65,7 @@ onMounted(() => {
 <template>
   <div class="visualizer">
     <div class="algorithm">
-      <h3>{{ algorithm.id }} Sort</h3>
+      <h2>{{ algorithm.id }} Sort</h2>
       <div>{{ (Math.floor(algorithm.time) / 1000).toFixed(1) }}s</div>
     </div>
     <canvas ref="canvasRef"></canvas>
@@ -64,22 +74,23 @@ onMounted(() => {
 
 <style lang="css" scoped>
 .visualizer {
+  flex: 1 1 300px;
+
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--spacing-md);
 }
 
 .algorithm {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: var(--spacing-xl);
 }
 
-h3 {
-  color: var(--text__highlight);
+h2 {
   text-transform: uppercase;
-  font-size: 1rem;
-  letter-spacing: 2px;
+  font-size: var(--text-base);
+  letter-spacing: var(--spacing-xs);
   margin: 0;
 }
 
