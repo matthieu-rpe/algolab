@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Algorithm, SortingEngine } from '@/types/algorithm';
 
-import SortingEngineVisualizer from './SortingEngineVisualizer.vue';
+import SortingAlgorithmVisualizer from './sorting-algorithm-visualizer.vue';
 
 defineProps<{
   algorithms: Algorithm<SortingEngine>[];
@@ -10,7 +10,7 @@ defineProps<{
 
 <template>
   <div class="container">
-    <SortingEngineVisualizer
+    <SortingAlgorithmVisualizer
       v-for="algorithm in algorithms"
       :key="algorithm.id"
       :algorithm="algorithm"

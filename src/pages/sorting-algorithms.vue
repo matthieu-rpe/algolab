@@ -3,11 +3,11 @@ import { onMounted, ref } from 'vue';
 
 import type { Algorithm, SortingEngine } from '@/types/algorithm';
 
-import { bubbleSort } from '@/algorithms/sortingEngines/bubble';
-import { mergeSort } from '@/algorithms/sortingEngines/merge';
-import { selectionSort } from '@/algorithms/sortingEngines/selection';
+import { bubbleSort } from '@/algorithms/sorting-engines/bubble';
+import { mergeSort } from '@/algorithms/sorting-engines/merge';
+import { selectionSort } from '@/algorithms/sorting-engines/selection';
 
-import SortingEngineContainer from '@/components/SortingEngineContainer.vue';
+import SortingAlgorithmContainer from '@/components/sorting-algorithm-container.vue';
 
 const size = defineModel<number>('size', { default: 25 });
 const speed = defineModel<number>('speed', { default: 100 });
@@ -139,7 +139,7 @@ onMounted(() => init());
   </header>
 
   <main>
-    <SortingEngineContainer :algorithms="algorithms" />
+    <SortingAlgorithmContainer :algorithms="algorithms" />
   </main>
 </template>
 
