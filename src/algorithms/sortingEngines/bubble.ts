@@ -1,3 +1,5 @@
+import type { SortingEngine } from '@/types/algorithm';
+
 /*
  * Bubble sort
  *
@@ -7,17 +9,20 @@
  * Consist of moving the biggest element of two to the right, until the end of the data. It will slowly "bubble up" using O(N) time.
  * Repeat this O(N) times to move every element one by one to the end.
  */
-export function* bubbleSort(data) {
+export function* bubbleSort(
+  data: number[],
+): Generator<SortingEngine, void, unknown> {
   const n = data.length;
 
   // Bubble up the 'n' elements
   for (let i = 0; i < n - 1; i++) {
     let swapped = false;
-    let sorted = Array.from({ length: i }, (_, k) => n - k - 1);
+    const sorted = Array.from({ length: i }, (_, k) => n - k - 1);
 
     yield {
       data,
       comparing: [0, 1],
+      moving: [],
       sorted,
     };
 
@@ -26,9 +31,12 @@ export function* bubbleSort(data) {
      * We stop at n-i-1 because 'i' elements have already been bubbled up before from index 'n-i-1' to 'n-1'.
      */
     for (let j = 0; j < n - i - 1; j++) {
-      if (data[j] > data[j + 1]) {
+      const leftValue = data[j] as number;
+      const rightValue = data[j + 1] as number;
+
+      if (leftValue > rightValue) {
         swapped = true;
-        [data[j], data[j + 1]] = [data[j + 1], data[j]];
+        [data[j], data[j + 1]] = [rightValue, leftValue];
       }
 
       yield {
