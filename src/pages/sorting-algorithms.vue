@@ -1,109 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
+import { useSortingAlgorithmsStore } from '@/stores/sorting-algorithms';
 
-import type { Algorithm, SortingEngine } from '@/types/algorithm';
+import SortingAlgorithmVisualizer from '@/components/sorting-algorithm-visualizer.vue';
 
-import { bubbleSort } from '@/algorithms/sorting-engines/bubble';
-import { mergeSort } from '@/algorithms/sorting-engines/merge';
-import { selectionSort } from '@/algorithms/sorting-engines/selection';
+const sortingAlgorithStore = useSortingAlgorithmsStore();
 
-import SortingAlgorithmContainer from '@/components/sorting-algorithm-container.vue';
-
-const size = defineModel<number>('size', { default: 25 });
-const speed = defineModel<number>('speed', { default: 100 });
-
-const algorithms = ref<Algorithm<SortingEngine>[]>([]);
-const timer = ref<number | null>(null);
-let flaggedTime: number | null = null;
-
-function updateTimer() {
-  if (flaggedTime) {
-    const currentTime = performance.now();
-    const delta = currentTime - flaggedTime;
-    flaggedTime = currentTime;
-
-    algorithms.value.forEach((a) => {
-      if (!a.done) {
-        a.time += delta;
-      }
-    });
-  }
-}
-
-function stop() {
-  if (timer.value) {
-    clearInterval(timer.value);
-    updateTimer();
-    timer.value = null;
-  }
-}
-
-function init() {
-  stop();
-
-  flaggedTime = null;
-
-  const randomData = Array.from(
-    { length: size.value },
-    () => Math.floor(Math.random() * 100) + 1,
-  );
-
-  const configs = [
-    { id: 'bubble', sort: bubbleSort },
-    { id: 'selection', sort: selectionSort },
-    { id: 'merge', sort: mergeSort },
-  ];
-
-  algorithms.value = configs.map(({ id, sort }) => {
-    const data = [...randomData];
-
-    return {
-      id,
-      engine: sort(data),
-      time: 0,
-      state: {
-        data,
-        comparing: [],
-        moving: [],
-        sorted: [],
-      },
-      done: false,
-    };
-  });
-}
-
-function run() {
-  if (!!timer.value) return;
-
-  flaggedTime = performance.now();
-
-  timer.value = setInterval(() => {
-    updateTimer();
-
-    let allDone = true;
-
-    algorithms.value.forEach((a) => {
-      if (a.done) return;
-      allDone = false;
-
-      const step = a.engine.next();
-
-      if (step.done) {
-        a.done = true;
-      } else {
-        a.state = step.value;
-      }
-    });
-
-    if (allDone) stop();
-  }, speed.value);
-}
-
-onMounted(() => init());
+onMounted(() => sortingAlgorithStore.init());
 </script>
 
 <template>
-  <header>
+  <div>
     <h1>Sorting Algorithms</h1>
     <div class="controls">
       <div class="inputs">
@@ -114,8 +21,8 @@ onMounted(() => init());
             id="data"
             min="1"
             max="1000"
-            v-model="size"
-            :disabled="!!timer"
+            v-model="sortingAlgorithStore.size"
+            :disabled="sortingAlgorithStore.running"
           />
         </div>
         <div class="input">
@@ -125,22 +32,34 @@ onMounted(() => init());
             id="speed"
             min="1"
             max="10000"
-            v-model="speed"
-            :disabled="!!timer"
+            v-model="sortingAlgorithStore.speed"
+            :disabled="sortingAlgorithStore.running"
           />
         </div>
       </div>
       <div class="launchers">
-        <button id="reset" @click="init">Reset</button>
-        <button v-if="timer" id="stop" @click="stop">Stop</button>
-        <button v-else id="play" @click="run">Start</button>
+        <button id="reset" @click="sortingAlgorithStore.init">Reset</button>
+        <button
+          v-if="sortingAlgorithStore.running"
+          id="stop"
+          @click="sortingAlgorithStore.stop"
+        >
+          Stop
+        </button>
+        <button v-else id="play" @click="sortingAlgorithStore.run">
+          Start
+        </button>
       </div>
     </div>
-  </header>
 
-  <main>
-    <SortingAlgorithmContainer :algorithms="algorithms" />
-  </main>
+    <div class="container">
+      <SortingAlgorithmVisualizer
+        v-for="algorithm in sortingAlgorithStore.algorithms"
+        :key="algorithm.id"
+        :algorithm="algorithm"
+      />
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -185,5 +104,18 @@ header {
 main {
   flex-grow: 1;
   margin: 1rem;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.visualizer {
+  flex: 0 1 500px;
 }
 </style>
