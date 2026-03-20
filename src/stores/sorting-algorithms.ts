@@ -8,6 +8,7 @@ import { bubbleSort } from '@/algorithms/sorting-engines/bubble';
 import { selectionSort } from '@/algorithms/sorting-engines/selection';
 import { quickSort } from '@/algorithms/sorting-engines/quick';
 import { radixSort } from '@/algorithms/sorting-engines/radix';
+import { thanosSort } from '@/algorithms/sorting-engines/thanos';
 
 const configs = [
   { id: 'bubble', sort: bubbleSort },
@@ -15,6 +16,7 @@ const configs = [
   { id: 'merge', sort: mergeSort },
   { id: 'quick', sort: quickSort },
   { id: 'radix', sort: radixSort },
+  { id: 'thanos', sort: thanosSort },
 ];
 
 export const useSortingAlgorithmsStore = defineStore(
